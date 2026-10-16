@@ -7,7 +7,21 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
 <title>Parallel Day · AI Film Studio</title>
-<link rel="icon" href="data:,">
+<meta name="description" content="Parallel Day is an AI film studio. We make ads and films with AI. No crew. No sets. Just the idea.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Parallel Day">
+<meta property="og:title" content="Parallel Day · AI Film Studio">
+<meta property="og:description" content="We make ads and films with AI. No crew. No sets. Just the idea.">
+<meta property="og:url" content="https://parallelday.studio/">
+<meta property="og:image" content="https://parallelday.studio/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Parallel Day · AI Film Studio">
+<meta name="twitter:description" content="We make ads and films with AI. No crew. No sets. Just the idea.">
+<meta name="twitter:image" content="https://parallelday.studio/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -66,13 +80,12 @@
   #p1 h2 { grid-area:t; text-align:center; max-width:none; font-size:clamp(26px,3.3vw,48px); align-self:end; }
   #p1 .slot { grid-area:s; justify-self:center; width:100%; max-width:200px; }
   #p1 .b { grid-area:v; }
-  #p2 { grid-template-columns:minmax(0,1.5fr) minmax(0,.85fr); }
-  #p2 h2 { font-size:clamp(28px,3.8vw,56px); max-width:14ch; }
-  #p2 .a { display:flex; flex-direction:column; gap:3.5vh; }
-  #p2 .slot { height:clamp(120px,21vh,210px); }
-  .thumbs { display:grid; grid-template-columns:1fr 1fr; gap:1.8vh 1.2vw; width:min(560px,100%,70vh); }
+  #p2 { grid-template-columns:1fr; justify-items:center; text-align:center; }
+  #p2 h2 { font-size:clamp(28px,3.8vw,56px); max-width:none; text-align:center; }
+  #p2 .a { display:flex; flex-direction:column; align-items:center; gap:4vh; width:100%; }
+  .thumbs { display:grid; grid-template-columns:1fr 1fr; gap:1.8vh 1.2vw; width:min(700px,100%,74vh); }
   .thumbs .play { width:clamp(24px,2.4vw,34px); }
-  #p3 { grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr); }
+  #p3 { grid-template-columns:1fr; justify-items:center; text-align:center; }
 
   .video { pointer-events:auto; position:relative; display:block; width:100%; aspect-ratio:16/9; background:#000; cursor:pointer;
     border:1px solid var(--line); border-radius:4px; color:var(--ink);
@@ -140,12 +153,10 @@
     .slot { height:clamp(120px,19vh,180px); }
     #p1, #p2 { grid-template-columns:1fr; align-content:center; }
     #p1 { grid-template-areas:"t" "s" "v"; padding:0 5vw; row-gap:2vh; } #p1 .slot { max-width:none; height:clamp(100px,17vh,150px); } #p1 .b { width:100%; }
-    #p2 .b { order:-1; }
-    #p2 .b { order:-1; }
     #p2 h2 { max-width:none; text-align:center; font-size:clamp(26px,7vw,36px); }
-    #p2 .a { align-items:center; gap:2vh; } #p2 .slot { height:clamp(80px,14vh,130px); }
+    #p2 .a { align-items:center; gap:2vh; }
     .thumbs { width:100%; gap:1.4vh 3vw; } .thumbs .play { width:30px; }
-    #p3 { grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr); gap:4vw; padding:0 5vw; }
+    #p3 { padding:0 5vw; }
     .contact dd { font-size:14px; } .contact h2 { font-size:28px; }
   }
   @media (prefers-reduced-motion: reduce) { .logo-svg { animation:none; } }
@@ -212,11 +223,9 @@
       <div class="video" role="button" tabindex="0" data-v="w4" aria-label="Play work 4"><span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>
     </div>
   </div>
-  <div class="b"><div class="slot" data-face="-1"></div></div>
 </section>
 
 <section class="panel" id="p3">
-  <div class="a"><div class="slot" data-face="1"></div></div>
   <div class="b contact">
     <h2>Contact</h2>
     <dl>
@@ -1006,7 +1015,7 @@ function frame(now) {
 
   /* ---------------- the guide ---------------- */
   let want = gHead;
-  if (us > gHead + 0.55) want = Math.min(3, Math.round(us));
+  if (us > gHead + 0.55) want = Math.min(1, Math.round(us));   // the guide stays on the video fold
   else if (us < gHead - 0.55) want = Math.max(0, Math.round(us));
   if (want !== gHead) {
     let from = { x: gPx.x, y: gPx.y, h: gPx.h, face: gFace };
@@ -1070,8 +1079,10 @@ function frame(now) {
     guide.grp.scale.set(face * sc, sc, sc);
     swing += ((gJump ? jd * Math.sin(Math.PI * clamp(gJump.t)) : 0) - swing) * (1 - Math.exp(-dt * 6));
     drawFigure(guide, time);
-    const gv = 0.8;
-    guide.bones.mat.color.setScalar(gv); guide.cloth.mat.color.setScalar(gv); guide.items.mat.color.setScalar(gv);
+    const gv = 0.8; let gv2;
+    const gf = gHead === 1 && !gJump && us > 1 ? alphaFor(1, us) : 1;      // he stays behind and fades with the video fold
+    gv2 = gv * gf;
+    guide.bones.mat.color.setScalar(gv2); guide.cloth.mat.color.setScalar(gv2); guide.items.mat.color.setScalar(gv2);
   }
 
   const curOn = step === 0 && cIn && !lbOpen;
