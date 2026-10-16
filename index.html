@@ -44,6 +44,13 @@
   .side.l { right:calc(50% + clamp(96px,13.6vw,196px)); text-align:right; padding-right:18px; border-right:1px solid var(--line); }
   .side.r { left:calc(50% + clamp(96px,13.6vw,196px)); text-align:left; padding-left:18px; border-left:1px solid var(--line); }
   @media (hover:hover) { .hint { display:none; } }
+  .arrows { position:absolute; left:50%; bottom:15vh; transform:translateX(-50%); display:none; flex-direction:column; align-items:center; gap:2px;
+    color:rgba(196,218,255,.95); filter:drop-shadow(0 0 5px rgba(120,170,255,.95)) drop-shadow(0 0 16px rgba(90,140,255,.6)); }
+  .arrows svg { width:46px; height:18px; display:block; opacity:.15; animation:arrowDrop 1.9s ease-in-out infinite; }
+  .arrows svg:nth-child(2) { animation-delay:.28s; }
+  @keyframes arrowDrop { 0% { opacity:.12; transform:translateY(-6px); } 45% { opacity:1; } 100% { opacity:.12; transform:translateY(8px); } }
+  @media (max-width:700px), (hover:none) { .arrows { display:flex; } }
+  @media (prefers-reduced-motion: reduce) { .arrows svg { animation:none; opacity:.8; } }
   .hint { position:absolute; left:50%; bottom:3.2vh; transform:translateX(-50%); font-size:11px; letter-spacing:.3em;
     text-transform:uppercase; color:var(--dim); }
 
@@ -100,12 +107,18 @@
   .contact a:hover { text-decoration:underline; text-underline-offset:4px; }
 
   /* landing-page cursor: a small circle that says Scroll */
-  /* warm gradient that rises from the bottom on the last screen: yellow, orange, red */
-  #glow { position:fixed; left:-12vw; right:-12vw; bottom:-16vh; height:78vh; pointer-events:none; opacity:0; z-index:0; filter:blur(26px) saturate(1.15);
-    background:
-      radial-gradient(60% 86% at 12% 100%, #e8e038 0%, rgba(232,224,56,.75) 28%, rgba(232,224,56,0) 74%),
-      radial-gradient(56% 92% at 54% 108%, #ff9a38 0%, rgba(255,154,56,.78) 30%, rgba(255,154,56,0) 76%),
-      radial-gradient(62% 96% at 94% 100%, #f2364f 0%, rgba(242,54,79,.8) 30%, rgba(242,54,79,0) 76%); }
+  /* flowing colour at the bottom of the last screen: deep navy, blue, green, lime on black. The blobs drift and morph slowly. */
+  #glow { position:fixed; left:-4vw; right:-4vw; bottom:-6vh; height:88vh; pointer-events:none; opacity:0; z-index:0; overflow:hidden; filter:blur(26px); }
+  #glow i { position:absolute; display:block; border-radius:50%; will-change:transform; }
+  #glow .g1 { left:-30vw; right:-30vw; bottom:-9vh; height:70vh; background:radial-gradient(50% 100% at 50% 100%, rgba(40,82,168,.80), rgba(18,44,104,.50) 46%, rgba(10,24,60,0) 76%); animation:flowA 14s ease-in-out infinite alternate; }
+  #glow .g2 { left:-6vw; right:-6vw; bottom:-9vh; height:52vh; background:radial-gradient(50% 100% at 50% 100%, rgba(74,134,196,.88), rgba(60,110,170,.42) 50%, rgba(60,110,170,0) 78%); animation:flowB 10.5s ease-in-out infinite alternate; }
+  #glow .g3 { left:14vw; right:14vw; bottom:-9vh; height:40vh; background:radial-gradient(50% 100% at 50% 100%, rgba(142,200,132,.90), rgba(110,170,130,.42) 50%, rgba(110,170,130,0) 78%); animation:flowC 8.5s ease-in-out infinite alternate; }
+  #glow .g4 { left:30vw; right:30vw; bottom:-9vh; height:30vh; background:radial-gradient(50% 100% at 50% 100%, rgba(206,234,92,.96), rgba(186,222,100,.45) 52%, rgba(186,222,100,0) 80%); animation:flowD 11.5s ease-in-out infinite alternate; }
+  @keyframes flowA { from { transform:translate(-7vw,0) scale(1,1); } to { transform:translate(7vw,-3vh) scale(1.12,1.1); } }
+  @keyframes flowB { from { transform:translate(9vw,2vh) scale(.92,.95); } to { transform:translate(-9vw,-5vh) scale(1.14,1.2); } }
+  @keyframes flowC { from { transform:translate(-14vw,1vh) scale(.88,.9); } to { transform:translate(12vw,-6vh) scale(1.2,1.25); } }
+  @keyframes flowD { from { transform:translate(11vw,2vh) scale(1,.88); } to { transform:translate(-12vw,-7vh) scale(1.28,1.3); } }
+  @media (prefers-reduced-motion: reduce) { #glow i { animation:none; } }
   #cur { position:fixed; left:0; top:0; width:70px; height:70px; margin:-35px 0 0 -35px; border-radius:50%; display:grid; place-items:center;
     border:1px solid rgba(190,215,255,.5); background:rgba(12,20,38,.38); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
     font-size:10px; letter-spacing:.22em; padding-left:.22em; text-transform:uppercase; color:var(--ink); pointer-events:none; z-index:40; opacity:0;
@@ -121,7 +134,8 @@
     .nav { padding:16px 18px; } .nav-logo { width:68px; left:16px; } .nav-tag { font-size:8px; letter-spacing:.12em; padding-left:.12em; }
     .logo { width:clamp(190px,58vw,300px); }
     .side { white-space:normal; text-align:center !important; border:0 !important; padding:0 !important; left:8vw !important; right:8vw !important; font-size:13px; }
-    .side.l { top:calc(50% - 17vh); } .side.r { top:calc(50% + 17vh); }
+    .side { transform:none; font-size:15px; line-height:1.5; }
+    .side.l { top:14vh; } .side.r { top:calc(14vh + 27px); }
     .panel { padding:0 7vw; gap:3vh; }
     .slot { height:clamp(120px,19vh,180px); }
     #p1, #p2 { grid-template-columns:1fr; align-content:center; }
@@ -139,7 +153,7 @@
 </head>
 <body>
 <div id="scroll"></div>
-<div id="glow"></div>
+<div id="glow"><i class="g1"></i><i class="g2"></i><i class="g3"></i><i class="g4"></i></div>
 <canvas id="gl"></canvas>
 
 
@@ -174,6 +188,7 @@
 </svg></div>
   <div class="side l" id="sideL"><b>We make ads and films with AI.</b></div>
   <div class="side r" id="sideR">No crew. No sets. Just the idea.</div>
+  <div class="arrows" id="arrows"><svg viewBox="0 0 46 18" aria-hidden="true"><polyline points="3,3 23,15 43,3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><svg viewBox="0 0 46 18" aria-hidden="true"><polyline points="3,3 23,15 43,3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="hint" id="hint">Scroll</div>
 </div>
 
@@ -879,7 +894,7 @@ addEventListener('keydown', e => {
   else if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
   else if (e.key === 'Home') { go(-4); } else if (e.key === 'End') { go(4); }
 });
-const glowEl = $('glow'), curEl = $('cur'); let cX = -200, cY = -200, pX = -200, pY = -200, cIn = false;
+const arrowsEl = $('arrows'), glowEl = $('glow'), curEl = $('cur'); let cX = -200, cY = -200, pX = -200, pY = -200, cIn = false;
 addEventListener('pointermove', e => { cX = e.clientX; cY = e.clientY; cIn = true; if (pX < -100) { pX = cX; pY = cY; } });
 document.addEventListener('pointerleave', () => { cIn = false; }); document.addEventListener('mouseleave', () => { cIn = false; });
 addEventListener('click', () => { if (step === 0 && !lbOpen && cIn) go(1); });         // clicking the Scroll circle also moves on
@@ -1078,6 +1093,7 @@ function frame(now) {
   navLogo.style.opacity = ss(0.3, 0.7, us);
   sideL.style.opacity = sideR.style.opacity = (1 - sm(clamp(rp * 2.5))) * heroA;
   hint.style.opacity = (1 - sm(clamp(rp * 3))) * 0.9;
+  arrowsEl.style.opacity = (1 - sm(clamp(rp * 3))) * heroA;
 
   requestAnimationFrame(frame);
 }
